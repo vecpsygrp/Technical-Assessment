@@ -1,0 +1,102 @@
+[
+  {
+    "Question": "Are you able to walk up a hill without stopping?",
+    "Responses": [
+      "Without any difficulty",
+      "With a little difficulty",
+      "With some difficulty",
+      "With much difficulty",
+      "Unable to do"
+    ]
+  },
+  {
+    "Question": "Are you able to sit for an hour without discomfort?",
+    "Responses": [
+      "Comfortably the whole time",
+      "Mostly comfortable",
+      "Occasionally uncomfortable",
+      "Frequently uncomfortable",
+      "Cannot sit for an hour"
+    ]
+  },
+  {
+    "Question": "Are you able to carry groceries up a flight of stairs?",
+    "Responses": [
+      "Easily",
+      "With minimal effort",
+      "With moderate effort",
+      "With great effort",
+      "Cannot do"
+    ]
+  },
+  {
+    "Question": "Are you able to stand for 30 minutes without needing to sit down?",
+    "Responses": [
+      "No pain or discomfort",
+      "Minor discomfort",
+      "Moderate discomfort",
+      "Severe discomfort",
+      "Cannot stand for 30 minutes"
+    ]
+  },
+  {
+    "Question": "Are you able to open a tight jar lid?",
+    "Responses": [
+      "Easily and quickly",
+      "With slight difficulty",
+      "With moderate effort",
+      "Only with assistance",
+      "Unable to open"
+    ]
+  },
+  {
+    "Question": "Are you able to turn your head fully to look behind you while driving or walking?",
+    "Responses": [
+      "Easily and smoothly",
+      "With slight stiffness",
+      "With noticeable stiffness",
+      "With significant pain or difficulty",
+      "Unable to turn head fully"
+    ]
+  },
+  {
+    "Question": "Are you able to climb two flights of stairs without stopping?",
+    "Responses": [
+      "Yes, without stopping",
+      "Yes, but with shortness of breath",
+      "Yes, but with significant difficulty",
+      "Only with frequent breaks",
+      "Unable to climb two flights"
+    ]
+  },
+  {
+    "Question": "Are you able to kneel down and get back up again?",
+    "Responses": [
+      "Effortlessly",
+      "With slight effort",
+      "With moderate effort",
+      "With great difficulty",
+      "Unable to kneel or rise"
+    ]
+  },
+  {
+    "Question": "Are you able to reach items on a high shelf without assistance?",
+    "Responses": [
+      "Easily",
+      "With slight stretching",
+      "With noticeable effort",
+      "Only with a step stool",
+      "Cannot reach high shelves"
+    ]
+  },
+  {
+    "Question": "Are you able to walk outdoors on uneven surfaces, such as gravel or grass?",
+    "Responses": [
+      "Easily and confidently",
+      "With slight caution",
+      "With moderate caution",
+      "With significant difficulty",
+      "Avoids walking on uneven surfaces"
+    ]
+  }
+]

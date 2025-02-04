@@ -63,6 +63,19 @@ def init_db():
         else:
             print(f"Found {Question.query.count()} existing questions. Skipping initialization.")
 
+@app.route('/')
+def root():
+    return jsonify({
+        "status": "online",
+        "version": "1.0.0",
+        "endpoints": [
+            "/api/health",
+            "/api/questions",
+            "/api/responses/<user_name>",
+            "/api/progress/<user_name>"
+        ]
+    })
+
 @app.route('/api/questions', methods=['GET'])
 def get_questions():
     questions = Question.query.order_by(Question.order_index).all()

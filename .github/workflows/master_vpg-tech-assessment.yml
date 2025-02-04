@@ -69,7 +69,7 @@ jobs:
         with:
           app-name: 'vpg-tech-assessment'
           slot-name: 'Production'
-          startup-command: 'gunicorn --bind=0.0.0.0:8000 app:app'
+          startup-command: 'python -m flask run --host=0.0.0.0 --port=8000'
 
       - name: Wait for app to start
         run: sleep 30s

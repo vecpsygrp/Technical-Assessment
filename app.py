@@ -41,23 +41,27 @@ class SurveyResponse(db.Model):
         }
 
 def init_db():
+    print("Starting database initialization...")
     with app.app_context():
         db.create_all()
+        print("Database tables created.")
         
         # Only initialize if no questions exist
         if Question.query.count() == 0:
+            print("No questions found. Loading from survey_questions.json...")
             with open('survey_questions.json', 'r') as f:
                 questions = json.load(f)
-                
-            for idx, q in enumerate(questions):
-                question = Question(
-                    question_text=q['Question'],
-                    responses=q['Responses'],
-                    order_index=idx
-                )
-                db.session.add(question)
-            
+                for idx, q in enumerate(questions):
+                    question = Question(
+                        question_text=q['Question'],
+                        responses=q['Responses'],
+                        order_index=idx
+                    )
+                    db.session.add(question)
             db.session.commit()
+            print(f"Loaded {len(questions)} questions into database.")
+        else:
+            print(f"Found {Question.query.count()} existing questions. Skipping initialization.")
 
 @app.route('/api/questions', methods=['GET'])
 def get_questions():
@@ -105,3 +109,6 @@ def health_check():
 if __name__ == '__main__':
     init_db()
     app.run(debug=True, port=5000)
+else:
+    # Initialize database for production environment
+    init_db()

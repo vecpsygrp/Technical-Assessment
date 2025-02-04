@@ -69,4 +69,16 @@ jobs:
         with:
           app-name: 'vpg-tech-assessment'
           slot-name: 'Production'
-          
+          startup-command: 'python -m flask run --host=0.0.0.0 --port=8000'
+
+      - name: Wait for app to start
+        run: sleep 30s
+
+      - name: Health check
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://vpg-tech-assessment.azurewebsites.net/api/health)
+          if [ "$response" != "200" ]; then
+            echo "Health check failed with status $response"
+            exit 1
+          fi
+          echo "Health check passed!"

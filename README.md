@@ -1,13 +1,11 @@
 # Mobile Developer Technical Assignment
 
 ## Overview
-Build a React Native quiz application that demonstrates your ability to implement state management, local storage, and UI development following mobile best practices.
+Build a mobile quiz application that demonstrates your ability to implement state management, local storage, and UI development following mobile best practices. While React Native is our preferred framework, you're welcome to use any technology stack that you believe will allow you to create the best possible application.
 
 ## API Information
 The quiz API is deployed and available at:
-```
 https://vpg-tech-assessment-agg9exckazhhawdr.eastus-01.azurewebsites.net
-```
 
 ### API Testing with Postman
 To help you test and understand the API endpoints, we've provided a Postman collection that includes all endpoints with example requests. You can find it in the `postman_collection.json` file.
@@ -102,33 +100,55 @@ The API provides questions in the following format:
 }
 ```
 
-## Your Task: React Native Quiz App
+## Your Task: Mobile Quiz App
+
+### Required Screens
+
+1. Welcome/Start Screen
+   - Clean, welcoming interface
+   - Username input field
+   - Start button (disabled until username is entered)
+   - Handle new and returning users appropriately
+
+2. Question Screen
+   - Display one question at a time
+   - Show question text prominently
+   - Present multiple-choice answers in a clear, tappable format
+   - Next/Previous navigation buttons
+   - Next button should be disabled until an answer is selected
+   - Previous button should allow reviewing/modifying previous answers
+   - Progress indicator showing "Question X of Y" (e.g., "Question 3/10")
+   - Consider adding animations for question transitions
+
+3. Completion Screen
+   - Congratulatory/Submission success message
+   - Summary of all questions and the user's responses
+   - Option to review/modify any answers
+   - Clear presentation of survey completion status
+   - Consider adding a visual representation of responses
 
 ### Core Features
 
-1. Create a React Native app that implements a step-by-step health survey:
-   - Display one question per screen
-   - Show multiple-choice answers for the current question
-   - Include Next/Previous navigation buttons
-   - Prevent proceeding without selecting an answer
-
-2. Implement the following screens:
-   - Welcome/Start screen
-   - Question screen (one question at a time)
-   - Progress indicator showing current question number (e.g., "Question 3/10")
-   - Final completion report showing all responses
-
-3. Integrate with the API to:
-   - Fetch survey questions
+1. Create a mobile app that implements a step-by-step health survey:
+   - Handle user authentication using the provided API
    - Save responses after each question
-   - Track and persist survey progress
-   
+   - Maintain survey progress
+   - Support offline functionality (optional)
+   - Implement smooth navigation between screens
+
+2. Data Management:
+   - Fetch and cache survey questions
+   - Store user responses locally
+   - Sync responses with the API
+   - Track survey progress
+   - Handle error cases gracefully
+
 ### Technical Requirements
-- Use React Native (latest stable version)
-- Implement React hooks (useState, useEffect) for state management
-- Use AsyncStorage for local persistence (saving current question and responses)
+- Use your preferred mobile development framework (React Native recommended but not required)
+- Implement appropriate state management for your chosen framework
+- Use local storage for data persistence (e.g., AsyncStorage for React Native)
 - Demonstrate proper data fetching patterns (loading states, error handling)
-- Follow React Native best practices for component structure
+- Follow mobile development best practices for your chosen framework
 
 ### UI/UX Requirements
 - Clean, intuitive interface for each question screen
@@ -153,9 +173,12 @@ The API provides questions in the following format:
   - Code documentation
 
 ## Submission Guidelines
-1. Please upload your codebase and APK (or IPA) build zipped to the OneDrive folder.
-2. Include setup instructions in your README.md
-3. Prepare to demonstrate your app in an iOS/Android emulator
+1. Upload your codebase and compiled app (APK for Android or IPA for iOS) zipped to the OneDrive folder
+2. Include in your README.md:
+   - Setup instructions for running your project
+   - Brief explanation of your technology choices
+   - Any additional features or improvements you've implemented
+3. Prepare to demonstrate your app in an appropriate emulator/simulator
 
 ## Evaluation Criteria
 - Code quality and organization
@@ -164,5 +187,6 @@ The API provides questions in the following format:
 - State management implementation
 - Testing approach
 - Documentation quality
+- Rationale for technical choices
 
 We'll review your code and discuss your implementation during a technical interview.

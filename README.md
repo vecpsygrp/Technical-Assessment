@@ -3,29 +3,28 @@
 ## Overview
 Build a React Native quiz application that demonstrates your ability to implement state management, local storage, and UI development following mobile best practices.
 
-## API Server Setup
-This repository includes a simple Flask API server that provides the quiz questions. Python is required to run the server. Once you have Python installed and in your PATH, you can follow these steps to run it:
-
-1. Create a virtual environment (optional but recommended):
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+## API Information
+The quiz API is deployed and available at:
+```
+https://vpg-tech-assessment-agg9exckazhhawdr.eastus-01.azurewebsites.net
 ```
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+### API Testing with Postman
+To help you test and understand the API endpoints, we've provided a Postman collection that includes all endpoints with example requests. You can find it in the `postman_collection.json` file.
 
-3. Run the API server:
-```bash
-python app.py
-```
+To use the collection:
+1. Download and install [Postman](https://www.postman.com/downloads/)
+2. Import the `postman_collection.json` file into Postman
+3. The collection includes:
+   - Pre-configured requests for all endpoints
+   - Example request bodies
+   - Automated tests for response validation
+   - Environment variables for base URL and auth token
 
-The API will be available at `http://localhost:5000` for local development or at your Azure deployment URL.
+The collection will automatically save your authentication token after you get one, making it easier to test subsequent endpoints.
 
 ## Authentication
-The API uses token-based authentication. Before making any requests, you need to obtain an authentication token:
+The API uses token-based authentication. Before making any requests, you need to obtain an authentication token. You can use any mock username of your choice (e.g., "test_user", "john_doe", etc.) - there's no need for real credentials.
 
 1. Get an authentication token:
 ```http
@@ -33,7 +32,7 @@ POST /api/get_auth_token
 Content-Type: application/json
 
 {
-    "user_name": "your_username"
+    "user_name": "test_user"  // Can be any username you choose
 }
 ```
 
@@ -41,11 +40,11 @@ Response:
 ```json
 {
     "token": "generated-uuid-token",
-    "user_name": "your_username"
+    "user_name": "test_user"
 }
 ```
 
-2. Use this token in all subsequent API requests:
+2. Use this token in all subsequent API requests.
 
 ### API Endpoints
 
@@ -88,26 +87,20 @@ Missing fields:
 }
 ```
 
-## Testing
-The API includes a test suite. To run the tests:
-
-```bash
-python -m pytest test_app.py -v
+### Data Structure
+The API provides questions in the following format:
+```json
+{
+  "Question": "Are you able to walk up a hill without stopping?",
+  "Responses": [
+    "Without any difficulty",
+    "With a little difficulty",
+    "With some difficulty",
+    "With much difficulty",
+    "Unable to do"
+  ]
+}
 ```
-
-## Azure Deployment
-The API is configured for Azure App Service deployment. The deployment configuration is handled through:
-- `.github/workflows/master_vpg-tech-assessment.yml` for CI/CD
-- `requirements.txt` for Python dependencies
-- `wsgi.py` for Azure App Service entry point
-
-When deployed to Azure, the API will use the production SQLite database for data persistence.
-
-## Development Notes
-- The API uses SQLite for data storage
-- All timestamps are stored and returned in UTC
-- Tokens are UUIDs and are stored in the database
-- CORS is enabled for all origins during development
 
 ## Your Task: React Native Quiz App
 
@@ -125,11 +118,10 @@ When deployed to Azure, the API will use the production SQLite database for data
    - Progress indicator showing current question number (e.g., "Question 3/10")
    - Final completion report showing all responses
 
-3. Integrate with the Flask API to:
+3. Integrate with the API to:
    - Fetch survey questions
    - Save responses after each question
    - Track and persist survey progress
-
    
 ### Technical Requirements
 - Use React Native (latest stable version)
@@ -146,27 +138,12 @@ When deployed to Azure, the API will use the production SQLite database for data
 - Disabled "Next" button until an answer is selected
 - Clear completion summary showing all questions and selected answers
 
-### Data Structure
-The API provides questions in the following format:
-```json
-{
-  "Question": "Are you able to walk up a hill without stopping?",
-  "Responses": [
-    "Without any difficulty",
-    "With a little difficulty",
-    "With some difficulty",
-    "With much difficulty",
-    "Unable to do"
-  ]
-}
-```
-
 ### Bonus Points (Completely Optional)
 - Enhanced Features:
   - Ability to review and modify previous answers
   - Save partial progress and resume later
   - Offline support with data sync
-  - Custom Flask API extensions
+  - Creative UI/UX improvements
 - Polish:
   - Screen transition animations
   - Creative results visualization
@@ -187,6 +164,5 @@ The API provides questions in the following format:
 - State management implementation
 - Testing approach
 - Documentation quality
-
 
 We'll review your code and discuss your implementation during a technical interview.

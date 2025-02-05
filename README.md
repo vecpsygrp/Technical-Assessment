@@ -22,21 +22,44 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Alternatively, if you prefer to keep things simple, you can use the static question data directly from `survey_questions.json` in your React Native app. However, we recommend using the Flask API as it provides a more realistic development experience with proper data persistence and state management.
+The API will be available at `http://localhost:5000` for local development or at your Azure deployment URL.
 
-The API will be available at `http://localhost:5000` with the following endpoints:
-- `GET /api/questions` - Returns the list of quiz questions
-- `POST /api/responses` - Save an answer
+## Authentication
+The API uses token-based authentication. Before making any requests, you need to obtain an authentication token:
+
+1. Get an authentication token:
+```http
+POST /api/get_auth_token
+Content-Type: application/json
+
+{
+    "user_name": "your_username"
+}
+```
+
+Response:
+```json
+{
+    "token": "generated-uuid-token",
+    "user_name": "your_username"
+}
+```
+
+2. Use this token in all subsequent API requests:
+
+### API Endpoints
+
+- `POST /api/get_auth_token` - Generate authentication token
+- `GET /api/questions/<token>` - Returns the list of quiz questions
+- `POST /api/responses/<token>` - Save an answer
   ```json
   {
-    "user_name": "john_doe",  
     "question_index": 0,      
     "response": "Without any difficulty" 
   }
   ``` 
-  
-- `GET /api/responses/<user_name>` - Get all responses for a user
-- `GET /api/progress/<user_name>` - Get survey progress for a user
+- `GET /api/responses/<token>/<user_name>` - Get all responses for a user
+- `GET /api/progress/<token>` - Get survey progress for the authenticated user
 - `GET /api/health` - Health check endpoint
 
 ### API Response Examples
@@ -44,27 +67,47 @@ The API will be available at `http://localhost:5000` with the following endpoint
 #### Get Progress Response
 ```json
 {
-  "total_questions": 10,
-  "completed_questions": 3,
-  "progress_percentage": 30.0
+    "total_questions": 10,
+    "answered_questions": 3,
+    "progress": 0.3
 }
 ```
 
-#### Get Responses
+#### Error Responses
+Invalid token:
 ```json
-[
-  {
-    "id": "uuid",
-    "user_name": "john_doe",
-    "question_index": 0,
-    "response": "Without any difficulty",
-    "created_at": "2025-01-06T20:03:36.789Z"
-  }
-]
+{
+    "error": "Invalid token"
+}
 ```
 
-### Note
-The server uses SQLite for data storage. A new database will be created automatically when you first run the app. If you want to reset all data, stop the flask server and delete the `survey.db` file.
+Missing fields:
+```json
+{
+    "error": "Missing required fields"
+}
+```
+
+## Testing
+The API includes a test suite. To run the tests:
+
+```bash
+python -m pytest test_app.py -v
+```
+
+## Azure Deployment
+The API is configured for Azure App Service deployment. The deployment configuration is handled through:
+- `.github/workflows/master_vpg-tech-assessment.yml` for CI/CD
+- `requirements.txt` for Python dependencies
+- `wsgi.py` for Azure App Service entry point
+
+When deployed to Azure, the API will use the production SQLite database for data persistence.
+
+## Development Notes
+- The API uses SQLite for data storage
+- All timestamps are stored and returned in UTC
+- Tokens are UUIDs and are stored in the database
+- CORS is enabled for all origins during development
 
 ## Your Task: React Native Quiz App
 

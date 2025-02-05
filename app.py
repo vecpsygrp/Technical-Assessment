@@ -12,6 +12,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+class UserToken(db.Model):
+    token = db.Column(db.String(36), primary_key=True)
+    user_name = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'token': self.token,
+            'user_name': self.user_name,
+            'created_at': self.created_at.isoformat()
+        }
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_text = db.Column(db.String(500), nullable=False)
@@ -26,7 +38,7 @@ class Question(db.Model):
 
 class SurveyResponse(db.Model):
     id = db.Column(db.String(36), primary_key=True)
-    user_name = db.Column(db.String(100), nullable=False)  # Simple identifier
+    user_name = db.Column(db.String(100), nullable=False)
     question_index = db.Column(db.Integer, nullable=False)
     response = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -39,6 +51,12 @@ class SurveyResponse(db.Model):
             'response': self.response,
             'created_at': self.created_at.isoformat()
         }
+
+def get_user_from_token(token):
+    user_token = UserToken.query.filter_by(token=token).first()
+    if not user_token:
+        return None
+    return user_token.user_name
 
 def init_db():
     print("Starting database initialization...")
@@ -70,26 +88,50 @@ def root():
         "version": "1.0.0",
         "endpoints": [
             "/api/health",
-            "/api/questions",
-            "/api/responses/<user_name>",
-            "/api/progress/<user_name>"
+            "/api/get_auth_token",
+            "/api/questions/<token>",
+            "/api/responses/<token>",
+            "/api/responses/<token>/<user_name>",
+            "/api/progress/<token>"
         ]
     })
 
-@app.route('/api/questions', methods=['GET'])
-def get_questions():
+@app.route('/api/get_auth_token', methods=['POST'])
+def get_auth_token():
+    data = request.json
+    if not data or 'user_name' not in data:
+        return jsonify({'error': 'user_name is required'}), 400
+    
+    # Generate a new token
+    token = str(uuid.uuid4())
+    user_token = UserToken(token=token, user_name=data['user_name'])
+    db.session.add(user_token)
+    db.session.commit()
+    
+    return jsonify({'token': token, 'user_name': data['user_name']}), 201
+
+@app.route('/api/questions/<token>', methods=['GET'])
+def get_questions(token):
+    user_name = get_user_from_token(token)
+    if not user_name:
+        return jsonify({'error': 'Invalid token'}), 401
+        
     questions = Question.query.order_by(Question.order_index).all()
     return jsonify([q.to_dict() for q in questions])
 
-@app.route('/api/responses', methods=['POST'])
-def save_response():
+@app.route('/api/responses/<token>', methods=['POST'])
+def save_response(token):
+    user_name = get_user_from_token(token)
+    if not user_name:
+        return jsonify({'error': 'Invalid token'}), 401
+        
     data = request.json
-    if not all(k in data for k in ['user_name', 'question_index', 'response']):
+    if not all(k in data for k in ['question_index', 'response']):
         return jsonify({'error': 'Missing required fields'}), 400
     
     response = SurveyResponse(
         id=str(uuid.uuid4()),
-        user_name=data['user_name'],
+        user_name=user_name,
         question_index=data['question_index'],
         response=data['response']
     )
@@ -98,30 +140,36 @@ def save_response():
     
     return jsonify(response.to_dict()), 201
 
-@app.route('/api/responses/<user_name>', methods=['GET'])
-def get_responses(user_name):
+@app.route('/api/responses/<token>/<user_name>', methods=['GET'])
+def get_responses(token, user_name):
+    token_user = get_user_from_token(token)
+    if not token_user:
+        return jsonify({'error': 'Invalid token'}), 401
+        
     responses = SurveyResponse.query.filter_by(user_name=user_name).all()
     return jsonify([r.to_dict() for r in responses])
 
-@app.route('/api/progress/<user_name>', methods=['GET'])
-def get_progress(user_name):
+@app.route('/api/progress/<token>', methods=['GET'])
+def get_progress(token):
+    user_name = get_user_from_token(token)
+    if not user_name:
+        return jsonify({'error': 'Invalid token'}), 401
+        
     total_questions = Question.query.count()
-    responses = SurveyResponse.query.filter_by(user_name=user_name).all()
-    completed_questions = len(set(r.question_index for r in responses))
+    answered_questions = SurveyResponse.query.filter_by(user_name=user_name).count()
     
     return jsonify({
         'total_questions': total_questions,
-        'completed_questions': completed_questions,
-        'progress_percentage': (completed_questions / total_questions) * 100 if total_questions > 0 else 0
+        'answered_questions': answered_questions,
+        'progress': (answered_questions / total_questions) if total_questions > 0 else 0
     })
 
-@app.route('/api/health', methods=['GET'])
+@app.route('/api/health')
 def health_check():
-    return jsonify({"status": "healthy", "message": "API is running"})
+    return jsonify({"status": "healthy"})
 
 if __name__ == '__main__':
     init_db()
     app.run(debug=True, port=5000)
 else:
-    # Initialize database for production environment
     init_db()

@@ -1,4 +1,4 @@
-// Add your TypeScript interfaces and types here
+// Type definitions for the calculator
 
 export type OperatorType = '+' | '-' | '*' | '/' | '=';
 
@@ -8,5 +8,3 @@ export interface CalculationState {
   operator: OperatorType | null;
   waitingForOperand: boolean;
 }
-
-// Add more types as needed by the application

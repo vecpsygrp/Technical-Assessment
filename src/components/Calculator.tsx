@@ -3,19 +3,16 @@ import Display from './Display';
 import Button from './Button';
 import '../styles/Calculator.css';
 
-// TODO: Candidate should implement this component to create a working calculator
+// Implement this component to create a working calculator
 
 const Calculator: React.FC = () => {
   const [display, setDisplay] = useState('0');
-  // TODO: Add necessary state variables to track calculations
+  // TODO: Add state variables for calculations
 
-  // TODO: Implement button click handlers for numbers, operators, and special functions
-  
   const handleButtonClick = (value: string) => {
-    // This is a stub function that the candidate should implement
     console.log(`Button clicked: ${value}`);
     
-    // Placeholder implementation - simply updates display with clicked value
+    // Implement your calculator logic
     if (display === '0') {
       setDisplay(value);
     } else {
@@ -27,7 +24,6 @@ const Calculator: React.FC = () => {
     <div className="calculator">
       <Display value={display} />
       <div className="calculator-keypad">
-        {/* TODO: Implement calculator buttons */}
         <div className="calculator-row">
           <Button value="7" onClick={handleButtonClick} />
           <Button value="8" onClick={handleButtonClick} />

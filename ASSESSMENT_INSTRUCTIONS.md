@@ -5,25 +5,25 @@ In this assessment, you will complete a simple calculator application using Reac
 
 ## Tasks
 
-1. **Review the Code Structure (5 minutes)**
+1. **Review the Code Structure**
    - Familiarize yourself with the project structure and components
    - Understand the existing components: Calculator, Display, and Button
 
-2. **Implement Calculator Logic (20 minutes)**
+2. **Implement Calculator Logic**
    - Complete the `Calculator.tsx` component to handle arithmetic operations
    - Implement proper state management for calculator operations
    - Ensure proper handling of numbers, operators, and the equals button
    
-3. **Handle Edge Cases (10 minutes)**
+3. **Handle Edge Cases**
    - Prevent division by zero
    - Handle decimal point input correctly
    - Manage number display limitations
    
-4. **Improve Type Safety (5 minutes)**
+4. **Improve Type Safety**
    - Use TypeScript interfaces and types appropriately
    - Ensure all components have proper type definitions
 
-5. **Polish and Test (5 minutes)**
+5. **Polish and Test**
    - Test your calculator for correctness
    - Ensure the UI behaves as expected
 
